@@ -8,22 +8,21 @@ export const logoutUser = () => {
 
 export const signUpUser = async ({ name, email, password, pin }) => {
   try {
-    const user = await firebase
+    let user;
+    firebase
       .auth()
-      .createUserWithEmailAndPassword(email, password);
-    await firebase
-      .auth()
-      .currentUser.updateProfile({
-        displayName: name,
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCred) => {
+        user = userCred.user;
+        user.updateProfile({ displayName: name });
       })
       .then(() => {
         const db = firebase.firestore();
-
         db.collection("users").doc(user.uid).set({
           displayName: name,
           email,
           pin,
-          createdAt: db.FieldValue.serverTimestamp(),
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
       });
 

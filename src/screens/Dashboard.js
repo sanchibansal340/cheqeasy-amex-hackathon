@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { StyleSheet } from "react-native";
 import firebase from "firebase/app";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { Text } from "react-native-paper";
-import { theme } from "../core/theme";
+import { Card, Title, Text } from "react-native-paper";
 import Background from "../components/Background";
 import Header from "../components/Header";
 import Button from "../components/Button";
@@ -11,16 +10,11 @@ import "firebase/auth";
 import "firebase/firestore";
 
 export default function Dashboard({ navigation }) {
-  const [name, setName] = useState("");
+  const name = firebase.auth().currentUser.displayName;
   const [allAccounts, setAllAccounts] = useState([]);
 
   useEffect(() => {
     const user = firebase.auth().currentUser;
-
-    if (user) {
-      setName(user.displayName);
-    }
-
     const db = firebase.firestore();
 
     db.collection("users")
@@ -28,7 +22,9 @@ export default function Dashboard({ navigation }) {
       .get()
       .then((userDoc) => {
         if (userDoc.exists) {
-          db.collection("accounts")
+          db.collection("users")
+            .doc(user.uid)
+            .collection("accounts")
             .orderBy("createdAt", "desc")
             .get()
             .then((docs) => {
@@ -39,6 +35,9 @@ export default function Dashboard({ navigation }) {
                   setAllAccounts((accounts) => [...accounts, { ...data, id }]);
                 });
               }
+            })
+            .then(() => {
+              navigation.navigate("Dashboard");
             });
         }
       });
@@ -54,15 +53,24 @@ export default function Dashboard({ navigation }) {
         Add an Account
       </Button>
       {allAccounts.map((account, index) => (
-        <TouchableOpacity
+        <Card
           key={index}
-          onPress={() => navigation.replace("CashChequeScreen")}
+          elevation={3}
+          style={styles.card}
+          onPress={() =>
+            navigation.navigate("CashChequeScreen", {
+              accId: account.accNo,
+              accBal: account.accBal,
+            })
+          }
         >
-          <Text style={styles.link}>{account.bankName}</Text>
-          <Text style={styles.link}>{account.accBal}</Text>
-        </TouchableOpacity>
+          <Card.Content>
+            <Title style={styles.name}>{account.bankName}</Title>
+            <Text style={styles.bal}>{account.accBal}</Text>
+          </Card.Content>
+        </Card>
       ))}
-      <Button mode="outlined" onPress={logoutUser}>
+      <Button mode="contained" onPress={logoutUser}>
         Logout
       </Button>
     </Background>
@@ -70,8 +78,17 @@ export default function Dashboard({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  link: {
+  card: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+    cursor: "pointer",
+  },
+  name: {
     fontWeight: "bold",
-    color: theme.colors.primary,
+  },
+  bal: {
+    fontSize: "16px",
   },
 });

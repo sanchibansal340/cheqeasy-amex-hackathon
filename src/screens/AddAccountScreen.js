@@ -23,6 +23,7 @@ export default function AddAccountScreen({ navigation }) {
       setAccNo({ ...accNo, error: accNumError });
       setName({ ...name, error: nameError });
       setBankName({ ...bankName, error: bankNameError });
+      return;
     }
     const db = firebase.firestore();
     const id = accNo.value.trim();
@@ -35,14 +36,16 @@ export default function AddAccountScreen({ navigation }) {
       .get()
       .then((userDoc) => {
         if (userDoc.exists) {
-          db.collection("accounts")
+          db.collection("users")
+            .doc(userId)
+            .collection("accounts")
             .doc(id)
             .set({
-              accNo: Number(accNo.value),
+              accNo: accNo.value,
               name: name.value,
               bankName: bankName.value,
-              accBal: min + Math.random() * max,
-              createdAt: db.FieldValue.serverTimestamp(),
+              accBal: (min + Math.random() * max).toFixed(2),
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             });
         }
       });

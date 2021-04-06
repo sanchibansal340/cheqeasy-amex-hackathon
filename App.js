@@ -14,6 +14,8 @@ import {
   Dashboard,
   AddAccountScreen,
   CashChequeScreen,
+  EnterPinScreen,
+  EnterFingerprintScreen,
 } from "./src/screens";
 import { FIREBASE_CONFIG } from "./src/core/config";
 
@@ -42,6 +44,11 @@ export default function App() {
           <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="AddAccountScreen" component={AddAccountScreen} />
           <Stack.Screen name="CashChequeScreen" component={CashChequeScreen} />
+          <Stack.Screen name="EnterPinScreen" component={EnterPinScreen} />
+          <Stack.Screen
+            name="EnterFingerprintScreen"
+            component={EnterFingerprintScreen}
+          />
           <Stack.Screen
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}

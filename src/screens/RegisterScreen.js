@@ -35,6 +35,7 @@ export default function RegisterScreen({ navigation }) {
       setEmail({ ...email, error: emailError });
       setPassword({ ...password, error: passwordError });
       setPin({ ...pin, error: pinError });
+      return;
     }
     setLoading(true);
     const response = await signUpUser({

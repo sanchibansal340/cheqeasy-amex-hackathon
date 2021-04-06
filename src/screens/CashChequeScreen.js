@@ -1,41 +1,36 @@
-// NOT TESTED
 import React, { useState } from "react";
-import { Text } from "react-native";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import { Text, StyleSheet } from "react-native";
 import { RadioButton } from "react-native-paper";
 import { nameValidator, amountValidator } from "../helpers";
+import { theme } from "../core/theme";
 import Background from "../components/Background";
 import BackButton from "../components/BackButton";
 import Header from "../components/Header";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 
-export default function AddAccountScreen({ navigation }) {
+export default function AddAccountScreen({ navigation, route }) {
   const [recName, setRecName] = useState({ value: "", error: "" });
   const [amount, setAmount] = useState({ value: "", error: "" });
-  const [amwords, setAmwords] = useState({ value: "", error: "" });
-  const [checked, setChecked] = useState({ value: "Yes", error: "" });
+  const [checked, setChecked] = useState("Yes");
+  const { accId, accBal } = route.params;
 
   const handleCreateCheque = () => {
     const nameError = nameValidator(recName.value, "Receiver's Name");
-    const amountError = amountValidator(amount.value);
-    const amWordError = nameValidator(amwords.value, "Amount (in words)");
+    const amountError = amountValidator(amount.value, Number(accBal));
 
-    if (nameError || amountError || amWordError) {
+    if (nameError || amountError) {
       setRecName({ ...recName, error: nameError });
       setAmount({ ...amount, error: amountError });
-      setAmwords({ ...amwords, error: amWordError });
+      return;
     }
 
-    const db = firebase.firestore();
-    const userId = firebase.auth().currentUser.uid;
-
-    // TODO: Get account doc & set cheque
-    db.collection("users").doc(userId).get();
-
-    navigation.navigate("EnterPinScreen");
+    navigation.navigate("EnterPinScreen", {
+      amount: amount.value,
+      recName: recName.value,
+      bearer: checked,
+      accId,
+    });
   };
 
   return (
@@ -58,21 +53,18 @@ export default function AddAccountScreen({ navigation }) {
         error={!!amount.error}
         errorText={amount.error}
       />
-      <TextInput
-        label="Amount (in Words)"
-        returnKeyType="next"
-        value={amwords.value}
-        onChangeText={(text) => setAmwords({ value: text, error: "" })}
-        error={!!amwords.error}
-        errorText={amwords.error}
-      />
       <RadioButton.Group
-        onValueChange={(text) => setChecked({ value: text, error: "" })}
-        value={checked.value}
+        onValueChange={(text) => setChecked(text)}
+        value={checked}
+        style={styles.radio}
       >
-        <Text>Bearer</Text>
-        <RadioButton.Item label="Yes" value="Yes" />
-        <RadioButton.Item label="No" value="No" />
+        <Text style={styles.bearer}>Bearer</Text>
+        <RadioButton.Item
+          label="Yes"
+          value="Yes"
+          color={theme.colors.primary}
+        />
+        <RadioButton.Item label="No" value="No" color={theme.colors.primary} />
       </RadioButton.Group>
       <Button
         mode="contained"
@@ -84,3 +76,13 @@ export default function AddAccountScreen({ navigation }) {
     </Background>
   );
 }
+
+const styles = StyleSheet.create({
+  bearer: {
+    fontSize: "18px",
+  },
+  radio: {
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+  },
+});

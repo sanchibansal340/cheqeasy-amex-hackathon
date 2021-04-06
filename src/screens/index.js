@@ -6,3 +6,5 @@ export { default as Dashboard } from "./Dashboard";
 export { default as AuthLoadingScreen } from "./AuthLoadingScreen";
 export { default as AddAccountScreen } from "./AddAccountScreen";
 export { default as CashChequeScreen } from "./CashChequeScreen";
+export { default as EnterPinScreen } from "./EnterPinScreen";
+export { default as EnterFingerprintScreen } from "./EnterFingerprintScreen";

@@ -1,17 +1,19 @@
-// NOT TESTED
 import React, { useState, useEffect } from "react";
 import { Text } from "react-native";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import { pinValidator } from "../helpers";
 import Background from "../components/Background";
 import BackButton from "../components/BackButton";
 import Header from "../components/Header";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 
-export default function AddAccountScreen({ navigation }) {
-  const [enterPin, setEnterPin] = useState();
+// TODO: Disable add acoount and bank buttons when count = 0
+
+export default function AddAccountScreen({ navigation, route }) {
+  const [enterPin, setEnterPin] = useState({ value: "", error: "" });
   const [pin, setPin] = useState();
   const [wrongCount, setWrongCount] = useState(5);
   const [error, setError] = useState("");
@@ -31,12 +33,18 @@ export default function AddAccountScreen({ navigation }) {
   }, []);
 
   const handleAddPin = () => {
-    if (enterPin !== pin) {
-      setWrongCount(wrongCount - 1);
-      setError(`Incorrect PIN. You have ${wrongCount} attempts left.`);
+    const pinError = pinValidator(enterPin.value);
+    if (pinError) {
+      setEnterPin({ ...enterPin, error: pinError });
+      return;
     }
-    // TODO: Build OTP logic
-    navigation.navigate("EnterOtpScreen");
+
+    if (Number(enterPin.value) !== pin) {
+      setWrongCount((prevWrongCount) => prevWrongCount - 1);
+      setError(`Incorrect PIN. You have ${wrongCount} attempts left.`);
+      setEnterPin("");
+    }
+    navigation.navigate("EnterFingerprintScreen", { route });
   };
 
   return (
@@ -46,8 +54,12 @@ export default function AddAccountScreen({ navigation }) {
       <TextInput
         label="Enter PIN"
         returnKeyType="next"
-        value={enterPin}
-        onChangeText={(text) => setEnterPin(...enterPin, text)}
+        value={enterPin.value}
+        onChangeText={(text) => setEnterPin({ value: text, error: "" })}
+        error={!!enterPin.error}
+        errorText={enterPin.error}
+        secureTextEntry
+        maxLength="6"
       />
       <Text>{error}</Text>
       <Button mode="contained" style={{ marginTop: 24 }} onPress={handleAddPin}>

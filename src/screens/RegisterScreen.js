@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 import Background from "../components/Background";
@@ -7,7 +7,7 @@ import Header from "../components/Header";
 import Button from "../components/Button";
 import TextInput from "../components/TextInput";
 import BackButton from "../components/BackButton";
-import { theme } from "../core/theme";
+import { AppContext } from "../core/AppContextProvider";
 import {
   emailValidator,
   passwordValidator,
@@ -24,6 +24,7 @@ export default function RegisterScreen({ navigation }) {
   const [pin, setPin] = useState({ value: "", error: "" });
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
+  const { theme } = useContext(AppContext);
 
   const onSignUpPressed = async () => {
     const nameError = nameValidator(name.value, "Name");
@@ -105,7 +106,14 @@ export default function RegisterScreen({ navigation }) {
       <View style={styles.row}>
         <Text>Already have an account? </Text>
         <TouchableOpacity onPress={() => navigation.replace("LoginScreen")}>
-          <Text style={styles.link}>Login</Text>
+          <Text
+            style={{
+              fontWeight: "bold",
+              color: theme.colors.primary,
+            }}
+          >
+            Login
+          </Text>
         </TouchableOpacity>
       </View>
       <Toast message={error} onDismiss={() => setError("")} />
@@ -117,9 +125,5 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     marginTop: 4,
-  },
-  link: {
-    fontWeight: "bold",
-    color: theme.colors.primary,
   },
 });

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
 import { Button as PaperButton } from "react-native-paper";
-import { theme } from "../core/theme";
+import { AppContext } from "../core/AppContextProvider";
 
 export default function Button({ mode, style, ...props }) {
+  const { theme } = useContext(AppContext);
   return (
     <PaperButton
       style={[

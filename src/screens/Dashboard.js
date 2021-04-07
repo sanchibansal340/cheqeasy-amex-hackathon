@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet } from "react-native";
+// import {TouchableOpacity} from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import firebase from "firebase/app";
 import { Card, Title, Text } from "react-native-paper";
 import Background from "../components/Background";
@@ -66,7 +67,9 @@ export default function Dashboard({ navigation }) {
         >
           <Card.Content>
             <Title style={styles.name}>{account.bankName}</Title>
-            <Text style={styles.bal}>{account.accBal}</Text>
+            <TouchableOpacity>
+              <Text style={styles.bal}>{account.accBal}</Text>
+            </TouchableOpacity>
           </Card.Content>
         </Card>
       ))}
@@ -83,12 +86,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 10,
-    cursor: "pointer",
+    // cursor: "pointer",
   },
   name: {
     fontWeight: "bold",
   },
   bal: {
-    fontSize: "16px",
+    fontSize: 16,
   },
 });

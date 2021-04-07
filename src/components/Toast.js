@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Snackbar } from "react-native-paper";
 import { StyleSheet, View, Text } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
-import { theme } from "../core/theme";
+import { AppContext } from "../core/AppContextProvider";
 
 export default function Toast({ type = "error", message, onDismiss }) {
+  const { theme } = useContext(AppContext);
   return (
     <View style={styles.container}>
       <Snackbar

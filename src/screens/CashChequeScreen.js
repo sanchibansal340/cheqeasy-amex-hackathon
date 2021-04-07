@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Text, StyleSheet } from "react-native";
 import { RadioButton } from "react-native-paper";
 import { nameValidator, amountValidator } from "../helpers";
-import { theme } from "../core/theme";
+import { AppContext } from "../core/AppContextProvider";
 import Background from "../components/Background";
 import BackButton from "../components/BackButton";
 import Header from "../components/Header";
@@ -10,6 +10,7 @@ import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 
 export default function AddAccountScreen({ navigation, route }) {
+  const { theme } = useContext(AppContext);
   const [recName, setRecName] = useState({ value: "", error: "" });
   const [amount, setAmount] = useState({ value: "", error: "" });
   const [checked, setChecked] = useState("Yes");
@@ -79,7 +80,7 @@ export default function AddAccountScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
   bearer: {
-    fontSize: "18px",
+    fontSize: 18,
   },
   radio: {
     justifyContent: "flex-start",

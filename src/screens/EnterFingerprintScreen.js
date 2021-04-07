@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { TouchableOpacity, StyleSheet, Text } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { TouchableOpacity, Text } from "react-native";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import * as LocalAuthentication from "expo-local-authentication";
 import Background from "../components/Background";
-import { theme } from "../core/theme";
+import { AppContext } from "../core/AppContextProvider";
 import Toast from "../components/Toast";
 
 const EnterFingerprintScreen = ({ navigation, route }) => {
@@ -13,6 +13,7 @@ const EnterFingerprintScreen = ({ navigation, route }) => {
   const [scanned, setScanned] = useState(false);
   const [error, setError] = useState();
   const { amount, recName, bearer, accId } = route.params;
+  const { theme } = useContext(AppContext);
 
   useEffect(() => {
     checkDeviceForHardware();
@@ -81,22 +82,19 @@ const EnterFingerprintScreen = ({ navigation, route }) => {
 
   return (
     <Background>
-      <TouchableOpacity
-        onPress={compatible && checkForBiometrics()}
-        style={styles.button}
-      >
-        <Text style={styles.link}>Fingerprint Scan</Text>
+      <TouchableOpacity onPress={compatible && checkForBiometrics()}>
+        <Text
+          style={{
+            fontWeight: "bold",
+            color: theme.colors.primary,
+          }}
+        >
+          Fingerprint Scan
+        </Text>
       </TouchableOpacity>
       <Toast message={error} onDismiss={() => setError("")} />
     </Background>
   );
 };
-
-const styles = StyleSheet.create({
-  link: {
-    fontWeight: "bold",
-    color: theme.colors.primary,
-  },
-});
 
 export default EnterFingerprintScreen;

@@ -59,7 +59,7 @@ export default function AddAccountScreen({ navigation, route }) {
         error={!!enterPin.error}
         errorText={enterPin.error}
         secureTextEntry
-        maxLength="6"
+        maxLength={6}
       />
       <Text>{error}</Text>
       <Button mode="contained" style={{ marginTop: 24 }} onPress={handleAddPin}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import Background from "../components/Background";
@@ -7,7 +7,7 @@ import Header from "../components/Header";
 import Button from "../components/Button";
 import TextInput from "../components/TextInput";
 import BackButton from "../components/BackButton";
-import { theme } from "../core/theme";
+import { AppContext } from "../core/AppContextProvider";
 import { emailValidator, passwordValidator } from "../helpers";
 import { loginUser } from "../api/auth-api";
 import Toast from "../components/Toast";
@@ -17,6 +17,7 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState({ value: "", error: "" });
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
+  const { theme } = useContext(AppContext);
 
   const onLoginPressed = async () => {
     const emailError = emailValidator(email.value);
@@ -67,7 +68,14 @@ export default function LoginScreen({ navigation }) {
         <TouchableOpacity
           onPress={() => navigation.navigate("ResetPasswordScreen")}
         >
-          <Text style={styles.forgot}>Forgot your password?</Text>
+          <Text
+            style={{
+              fontSize: 13,
+              color: theme.colors.secondary,
+            }}
+          >
+            Forgot your password?
+          </Text>
         </TouchableOpacity>
       </View>
       <Button loading={loading} mode="contained" onPress={onLoginPressed}>
@@ -76,7 +84,14 @@ export default function LoginScreen({ navigation }) {
       <View style={styles.row}>
         <Text>Don’t have an account? </Text>
         <TouchableOpacity onPress={() => navigation.replace("RegisterScreen")}>
-          <Text style={styles.link}>Sign up</Text>
+          <Text
+            style={{
+              fontWeight: "bold",
+              color: theme.colors.primary,
+            }}
+          >
+            Sign up
+          </Text>
         </TouchableOpacity>
       </View>
       <Toast message={error} onDismiss={() => setError("")} />
@@ -93,13 +108,5 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     marginTop: 4,
-  },
-  forgot: {
-    fontSize: 13,
-    color: theme.colors.secondary,
-  },
-  link: {
-    fontWeight: "bold",
-    color: theme.colors.primary,
   },
 });

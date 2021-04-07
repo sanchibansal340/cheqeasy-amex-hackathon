@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   ImageBackground,
   StyleSheet,
   KeyboardAvoidingView,
 } from "react-native";
-import { theme } from "../core/theme";
+import { AppContext } from "../core/AppContextProvider";
+
+const image = { uri: "https://www.transparenttextures.com/patterns/vichy.png" };
 
 export default function Background({ children }) {
+  const { theme } = useContext(AppContext);
   return (
     <ImageBackground
-      source={require("../assets/background_dot.png")}
+      // source={require("../assets/background_dot.png")}
+      source={image}
       resizeMode="repeat"
-      style={styles.background}
+      style={{
+        flex: 1,
+        width: "100%",
+        backgroundColor: theme.colors.surface,
+      }}
     >
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         {children}
@@ -21,11 +29,6 @@ export default function Background({ children }) {
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    width: "100%",
-    backgroundColor: theme.colors.surface,
-  },
   container: {
     flex: 1,
     padding: 20,

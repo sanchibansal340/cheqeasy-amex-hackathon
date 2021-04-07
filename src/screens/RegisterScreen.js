@@ -93,7 +93,7 @@ export default function RegisterScreen({ navigation }) {
         error={!!pin.error}
         errorText={pin.error}
         secureTextEntry
-        maxLength="6"
+        maxLength={6}
       />
       <Button
         loading={loading}

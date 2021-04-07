@@ -12,7 +12,7 @@ const EnterFingerprintScreen = ({ navigation, route }) => {
   const [compatible, setCompatible] = useState(false);
   const [scanned, setScanned] = useState(false);
   const [error, setError] = useState();
-  const { amount, recName, bearer, accId } = route.params;
+  const { amount, recName, accId } = route.params;
   const { theme } = useContext(AppContext);
 
   useEffect(() => {
@@ -40,9 +40,9 @@ const EnterFingerprintScreen = ({ navigation, route }) => {
     const result = await LocalAuthentication.authenticateAsync();
     if (result.success) {
       setScanned(true);
+      updateDb();
     } else {
       setError("Fingerprint does not match");
-      updateDb();
     }
   };
 
@@ -70,7 +70,6 @@ const EnterFingerprintScreen = ({ navigation, route }) => {
                   .add({
                     recName,
                     amount,
-                    bearer,
                   });
               }
             });

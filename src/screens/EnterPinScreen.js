@@ -15,7 +15,7 @@ import Button from "../components/Button";
 export default function AddAccountScreen({ navigation, route }) {
   const [enterPin, setEnterPin] = useState({ value: "", error: "" });
   const [pin, setPin] = useState();
-  const [wrongCount, setWrongCount] = useState(5);
+  const [wrongCount, setWrongCount] = useState(4);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function AddAccountScreen({ navigation, route }) {
         error={!!enterPin.error}
         errorText={enterPin.error}
         secureTextEntry
-        maxLength="6"
+        maxLength={6}
       />
       <Text>{error}</Text>
       <Button mode="contained" style={{ marginTop: 24 }} onPress={handleAddPin}>

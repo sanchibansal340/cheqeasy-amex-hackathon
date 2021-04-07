@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import {TouchableOpacity} from "react-native";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import firebase from "firebase/app";
 import { Card, Title, Text } from "react-native-paper";
@@ -11,12 +10,13 @@ import "firebase/auth";
 import "firebase/firestore";
 
 export default function Dashboard({ navigation }) {
-  const name = firebase.auth().currentUser.displayName;
+  const [name, setName] = useState("");
   const [allAccounts, setAllAccounts] = useState([]);
 
   useEffect(() => {
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
+    setName(user.displayName);
 
     db.collection("users")
       .doc(user.uid)
@@ -36,9 +36,6 @@ export default function Dashboard({ navigation }) {
                   setAllAccounts((accounts) => [...accounts, { ...data, id }]);
                 });
               }
-            })
-            .then(() => {
-              navigation.navigate("Dashboard");
             });
         }
       });
@@ -86,7 +83,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 10,
-    // cursor: "pointer",
   },
   name: {
     fontWeight: "bold",

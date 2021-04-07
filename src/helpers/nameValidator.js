@@ -1,4 +1,4 @@
-export function nameValidator(name) {
-  if (!name) return "Name can't be empty."
-  return ''
+export default function nameValidator(name, label) {
+  if (!name) return `${label} can't be empty.`;
+  return "";
 }

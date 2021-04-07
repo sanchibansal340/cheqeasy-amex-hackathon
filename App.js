@@ -1,10 +1,10 @@
-import React from 'react'
-import { Provider } from 'react-native-paper'
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import firebase from 'firebase/app'
-import 'firebase/auth'
-import { theme } from './src/core/theme'
+import React from "react";
+import { Provider } from "react-native-paper";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import firebase from "firebase/app";
+import "firebase/auth";
+import { theme } from "./src/core/theme";
 import {
   AuthLoadingScreen,
   StartScreen,
@@ -12,12 +12,16 @@ import {
   RegisterScreen,
   ResetPasswordScreen,
   Dashboard,
-} from './src/screens'
-import { FIREBASE_CONFIG } from './src/core/config'
+  AddAccountScreen,
+  CashChequeScreen,
+  EnterPinScreen,
+  EnterFingerprintScreen,
+} from "./src/screens";
+import { FIREBASE_CONFIG } from "./src/core/config";
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
 if (!firebase.apps.length) {
-  firebase.initializeApp(FIREBASE_CONFIG)
+  firebase.initializeApp(FIREBASE_CONFIG);
 }
 
 export default function App() {
@@ -38,6 +42,13 @@ export default function App() {
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
           <Stack.Screen name="Dashboard" component={Dashboard} />
+          <Stack.Screen name="AddAccountScreen" component={AddAccountScreen} />
+          <Stack.Screen name="CashChequeScreen" component={CashChequeScreen} />
+          <Stack.Screen name="EnterPinScreen" component={EnterPinScreen} />
+          <Stack.Screen
+            name="EnterFingerprintScreen"
+            component={EnterFingerprintScreen}
+          />
           <Stack.Screen
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}
@@ -45,5 +56,5 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
-  )
+  );
 }

@@ -1,11 +1,9 @@
-// Replace with your own firebase config!
 export const FIREBASE_CONFIG = {
-  apiKey: 'AIzaSyBDsdN3XWM5D2-c_ti5j44GrhMnBHNmSF0',
-  authDomain: 'react-native-market-2861b.firebaseapp.com',
-  databaseURL: 'https://react-native-market-2861b.firebaseio.com',
-  projectId: 'react-native-market-2861b',
-  storageBucket: 'react-native-market-2861b.appspot.com',
-  messagingSenderId: '878215484396',
-  appId: '1:878215484396:web:c36074bccb0b5693b0a6c9',
-  measurementId: 'G-317PLP59P2',
-}
+  apiKey: "AIzaSyB3U5pxyICTwx1FxC1x85QvaImS--x_J3Q",
+  authDomain: "cheqeasy.firebaseapp.com",
+  projectId: "cheqeasy",
+  storageBucket: "cheqeasy.appspot.com",
+  messagingSenderId: "355979277509",
+  appId: "1:355979277509:web:d08a25276a9a374fdaecac",
+  measurementId: "G-CG83CBGTE2",
+};

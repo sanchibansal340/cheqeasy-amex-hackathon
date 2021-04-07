@@ -1,23 +1,94 @@
-import React from 'react'
-import Background from '../components/Background'
-import Logo from '../components/Logo'
-import Header from '../components/Header'
-import Paragraph from '../components/Paragraph'
-import Button from '../components/Button'
-import { logoutUser } from '../api/auth-api'
+import React, { useState, useEffect } from "react";
+import { StyleSheet } from "react-native";
+import firebase from "firebase/app";
+import { Card, Title, Text } from "react-native-paper";
+import Background from "../components/Background";
+import Header from "../components/Header";
+import Button from "../components/Button";
+import { logoutUser } from "../api/auth-api";
+import "firebase/auth";
+import "firebase/firestore";
 
-export default function Dashboard() {
+export default function Dashboard({ navigation }) {
+  const name = firebase.auth().currentUser.displayName;
+  const [allAccounts, setAllAccounts] = useState([]);
+
+  useEffect(() => {
+    const user = firebase.auth().currentUser;
+    const db = firebase.firestore();
+
+    db.collection("users")
+      .doc(user.uid)
+      .get()
+      .then((userDoc) => {
+        if (userDoc.exists) {
+          db.collection("users")
+            .doc(user.uid)
+            .collection("accounts")
+            .orderBy("createdAt", "desc")
+            .get()
+            .then((docs) => {
+              if (docs) {
+                docs.forEach((doc) => {
+                  const data = doc.data();
+                  const id = doc.id;
+                  setAllAccounts((accounts) => [...accounts, { ...data, id }]);
+                });
+              }
+            })
+            .then(() => {
+              navigation.navigate("Dashboard");
+            });
+        }
+      });
+  }, []);
+
   return (
     <Background>
-      <Logo />
-      <Header>Let’s start</Header>
-      <Paragraph>
-        Your amazing app starts here. Open you favorite code editor and start
-        editing this project.
-      </Paragraph>
-      <Button mode="outlined" onPress={logoutUser}>
+      <Header>Hello {name}</Header>
+      <Button
+        mode="contained"
+        onPress={() => navigation.navigate("AddAccountScreen")}
+      >
+        Add an Account
+      </Button>
+      {allAccounts.map((account, index) => (
+        <Card
+          key={index}
+          elevation={3}
+          style={styles.card}
+          onPress={() =>
+            navigation.navigate("CashChequeScreen", {
+              accId: account.accNo,
+              accBal: account.accBal,
+            })
+          }
+        >
+          <Card.Content>
+            <Title style={styles.name}>{account.bankName}</Title>
+            <Text style={styles.bal}>{account.accBal}</Text>
+          </Card.Content>
+        </Card>
+      ))}
+      <Button mode="contained" onPress={logoutUser}>
         Logout
       </Button>
     </Background>
-  )
+  );
 }
+
+const styles = StyleSheet.create({
+  card: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+    cursor: "pointer",
+  },
+  name: {
+    fontWeight: "bold",
+  },
+  bal: {
+    fontSize: "16px",
+  },
+});

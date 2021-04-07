@@ -14,7 +14,7 @@ export default function AddAccountScreen({ navigation }) {
   const [name, setName] = useState({ value: "", error: "" });
   const [bankName, setBankName] = useState({ value: "", error: "" });
 
-  const onAddAccountPressed = () => {
+  const onAddAccountPressed = async () => {
     const nameError = nameValidator(name.value, "Name");
     const bankNameError = nameValidator(bankName.value, "Bank Name");
     const accNumError = accNumValidator(accNo.value);
@@ -34,9 +34,10 @@ export default function AddAccountScreen({ navigation }) {
     db.collection("users")
       .doc(userId)
       .get()
-      .then((userDoc) => {
+      .then(async (userDoc) => {
         if (userDoc.exists) {
-          db.collection("users")
+          await db
+            .collection("users")
             .doc(userId)
             .collection("accounts")
             .doc(id)
@@ -48,9 +49,10 @@ export default function AddAccountScreen({ navigation }) {
               createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             });
         }
+      })
+      .then(() => {
+        navigation.navigate("Dashboard");
       });
-
-    navigation.navigate("Dashboard");
   };
 
   return (
@@ -65,7 +67,7 @@ export default function AddAccountScreen({ navigation }) {
         errorText={accNo.error}
         onChangeText={(text) => setAccNo({ value: text, error: "" })}
         keyboardType="number-pad"
-        maxLength="16"
+        maxLength={16}
       />
       <TextInput
         label="Account Holder Name"

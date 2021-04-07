@@ -79,7 +79,7 @@ export default function AddAccountScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
   bearer: {
-    fontSize: "18px",
+    fontSize: 18,
   },
   radio: {
     justifyContent: "flex-start",

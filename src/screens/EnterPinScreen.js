@@ -15,7 +15,7 @@ import Button from "../components/Button";
 export default function AddAccountScreen({ navigation, route }) {
   const [enterPin, setEnterPin] = useState({ value: "", error: "" });
   const [pin, setPin] = useState();
-  const [wrongCount, setWrongCount] = useState(5);
+  const [wrongCount, setWrongCount] = useState(4);
   const [error, setError] = useState("");
 
   useEffect(() => {

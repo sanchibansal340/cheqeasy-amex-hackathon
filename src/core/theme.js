@@ -16,11 +16,10 @@ export const darkTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    text: "#93329e",
+    text: "#fff",
     primary: "#ffbe0f",
     secondary: "#8ac4d0",
     error: "#f13a59",
     success: "#00B386",
-    button: "#845ec2",
   },
 };

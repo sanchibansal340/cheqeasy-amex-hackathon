@@ -1,6 +1,11 @@
-export { default as StartScreen } from './StartScreen'
-export { default as LoginScreen } from './LoginScreen'
-export { default as RegisterScreen } from './RegisterScreen'
-export { default as ResetPasswordScreen } from './ResetPasswordScreen'
-export { default as Dashboard } from './Dashboard'
-export { default as AuthLoadingScreen } from './AuthLoadingScreen'
+export { default as StartScreen } from "./StartScreen";
+export { default as LoginScreen } from "./LoginScreen";
+export { default as RegisterScreen } from "./RegisterScreen";
+export { default as ResetPasswordScreen } from "./ResetPasswordScreen";
+export { default as Dashboard } from "./Dashboard";
+export { default as AuthLoadingScreen } from "./AuthLoadingScreen";
+export { default as AddAccountScreen } from "./AddAccountScreen";
+export { default as CashChequeScreen } from "./CashChequeScreen";
+export { default as EnterPinScreen } from "./EnterPinScreen";
+export { default as EnterFingerprintScreen } from "./EnterFingerprintScreen";
+export { default as AllCheques } from "./AllCheques";

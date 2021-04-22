@@ -13,6 +13,7 @@ import {
   CashChequeScreen,
   EnterPinScreen,
   EnterFingerprintScreen,
+  AllCheques,
 } from "./src/screens";
 import AppContextProvider from "./src/core/AppContextProvider";
 import { FIREBASE_CONFIG } from "./src/core/config";
@@ -43,6 +44,7 @@ export default function App() {
           name="EnterFingerprintScreen"
           component={EnterFingerprintScreen}
         />
+        <Stack.Screen name="AllCheques" component={AllCheques} />
         <Stack.Screen
           name="ResetPasswordScreen"
           component={ResetPasswordScreen}

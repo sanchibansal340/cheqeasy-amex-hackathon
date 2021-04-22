@@ -8,3 +8,4 @@ export { default as AddAccountScreen } from "./AddAccountScreen";
 export { default as CashChequeScreen } from "./CashChequeScreen";
 export { default as EnterPinScreen } from "./EnterPinScreen";
 export { default as EnterFingerprintScreen } from "./EnterFingerprintScreen";
+export { default as AllCheques } from "./AllCheques";

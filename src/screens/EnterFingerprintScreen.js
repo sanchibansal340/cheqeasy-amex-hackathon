@@ -40,17 +40,19 @@ const EnterFingerprintScreen = ({ navigation, route }) => {
     const result = await LocalAuthentication.authenticateAsync();
     if (result.success) {
       setScanned(true);
-      updateDb();
+      updateDb("In-Progress");
     } else {
       setError("Fingerprint does not match");
+      updateDb("Failiure");
     }
   };
 
-  const updateDb = () => {
+  const updateDb = async (status) => {
     const db = firebase.firestore();
     const userId = firebase.auth().currentUser.uid;
 
-    db.collection("users")
+    await db
+      .collection("users")
       .doc(userId)
       .get()
       .then((userDoc) => {
@@ -70,6 +72,7 @@ const EnterFingerprintScreen = ({ navigation, route }) => {
                   .add({
                     recName,
                     amount,
+                    status,
                   });
               }
             });
